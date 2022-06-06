@@ -1,0 +1,220 @@
+package me.ivanmazzoli.UI;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
+import org.joda.time.DateTime;
+
+import java.util.concurrent.TimeUnit;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import me.ivanmazzoli.R;
+import me.ivanmazzoli.SmartFragment;
+import me.ivanmazzoli.Utils.DrawerManager;
+import me.ivanmazzoli.Utils.PreferenceHelper;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class NavigationActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
+
+    // View classe
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    // Variabili classe
+    private final String SELECTED_ID = "selectedID";
+    private Drawer drawer;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_navigation);
+
+        // Associo ButterKnife
+        ButterKnife.bind(this);
+
+        // Sostituisco l'Action Bar con una Toolbar
+        setSupportActionBar(toolbar);
+
+        // Creo il Drawer laterale di navigazione
+        View headerView = getLayoutInflater().inflate(R.layout.layout_drawer_header, null);
+        drawer = new DrawerBuilder().withActivity(this)
+                .withHeader(headerView)
+                .withToolbar(toolbar)
+                .withDrawerItems(DrawerManager.getInstance(this).getDrawerItems())
+                .withOnDrawerItemClickListener(this)
+                .build();
+
+        // Se non ho una SavedInstance carico la lista completa,
+        // altrimenti carico la SavedInstance e mostro il fragment precedente
+        if (savedInstanceState == null) {
+            drawer.setSelection(DrawerManager.LIST_FULL, true);
+        } else {
+            long selectedID = savedInstanceState.getLong(SELECTED_ID);
+            drawer.setSelection(selectedID, true);
+        }
+
+        // Controllo se ho un update della app
+        checkAppUpdate();
+    }
+
+    /**
+     * Metodo per controllare se è disponibile per il download una nuova versione dell'app
+     * <p>
+     * Si scarica dall'endpoint remoto il numero di build della versione disponibile per il download
+     * e lo compara con la versione di build dell'app in esecuzione. I check vengono eseguiti massimo
+     * una volta ogni due ore.
+     */
+    private void checkAppUpdate() {
+
+        // Ottengo il PreferenceHelper
+        PreferenceHelper helper = PreferenceHelper.getInstance(this);
+
+        // Se l'ultimo check è stato fatto MENO di due ore fa mi fermo
+        if (new DateTime().minusHours(2).isBefore(helper.getLastUpdateCheck()))
+            return;
+
+        // Ottengo numero di build dell'applicazione corrente
+        int currentBuild;
+        try {
+            currentBuild = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Creo un nuovo client HTTP
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(2, TimeUnit.SECONDS)
+                .readTimeout(2, TimeUnit.SECONDS)
+                .cache(null)
+                .build();
+
+        // Creo la richiesta all'API endpoint di versione build remota
+        String api = "https://www.tipsyapp.it/ilpra/release/build.txt";
+        Request request = new Request.Builder().url(api).build();
+
+        // Invio la richiesta in modalità async in un nuovo thread
+        new Thread(() -> {
+            // Ottengo la versione di build dall'API
+            Response response;
+            int webBuild;
+            try {
+                response = client.newCall(request).execute();
+                assert response.body() != null;
+                webBuild = Integer.parseInt(response.body().string());
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(NavigationActivity.this, e.toString(), Toast.LENGTH_LONG).show());
+                return;
+            }
+
+            // Salvo nelle preferences dell'app l'ultimo check effettuato correttamente
+            helper.setLastUpdateCheck(new DateTime().getMillis());
+
+            // Se la versione ha numero di build maggiore o uguale a quella remota mi fermo
+            if (webBuild <= currentBuild)
+                return;
+
+            // Creo un nuovo thread nell'uiThread per mostrare il Dialog di avviso nuova versione
+            runOnUiThread(() -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(NavigationActivity.this);
+                builder.setMessage("Vuoi scaricare la nuova versione dell'app?")
+                        .setTitle("Aggiornamento disponibile!");
+                builder.setPositiveButton("Ok", (dialog, id) -> {
+                    String url = "https://www.tipsyapp.it/ilpra/release/release.apk";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                });
+                builder.setNegativeButton("No", (dialog, id) -> {
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            });
+        }).start();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putLong(SELECTED_ID, drawer.getCurrentSelection());
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+
+        // Ottengo il fragment legato al Drawer laterale
+        Object fragment = DrawerManager.getInstance(this)
+                .getFragmentFromID(drawerItem.getIdentifier());
+
+        // Se il fragment é null mi fermo
+        if (fragment == null) {
+            return false;
+        }
+
+        // Mostro il fragment nel container
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        // Se fragment normale casto TipsyFragment altrimenti TipsyPreferenceFragment
+        if (fragment instanceof SmartFragment) {
+            fragmentTransaction.replace(R.id.navigationContainer, (SmartFragment) fragment);
+            toolbar.setTitle(((SmartFragment) fragment).getActivityTitle());
+            //((SmartFragment) fragment).setOnFragmentChangeRequest(this);
+            // Controllo se nascondere o mostrare l'elevation della toolbar
+            if (((SmartFragment) fragment).hideToolbarElevation())
+                getSupportActionBar().setElevation(0);
+            else
+                getSupportActionBar().setElevation(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
+        } else {
+            //fragmentTransaction.replace(R.id.navigationContainer, (TipsyPreferenceFragment) fragment);
+        }
+
+        // Cambio il fragment
+        fragmentTransaction.commit();
+
+        // Setto il titolo all'activity e chiudo il drawer
+        if (fragment instanceof SmartFragment)
+            getSupportActionBar().setTitle(((SmartFragment) fragment).getActivityTitle());
+        //else
+        //getSupportActionBar().setTitle(((TipsyPreferenceFragment) fragment).getActivityTitle());
+        drawer.closeDrawer();
+
+        // Invalido il menù
+        invalidateOptionsMenu();
+
+        return true;
+    }
+}
