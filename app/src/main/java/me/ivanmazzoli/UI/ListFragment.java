@@ -99,6 +99,12 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
                 this.setActivityTitle("Pulsanti e gemme");
                 this.filter = "Componenti Pulsanti e Gemme";
                 break;
+            case 8:
+                this.setDrawerTitle("Connettori");
+                this.setDrawerIcon(R.drawable.ic_connector);
+                this.setActivityTitle("Connettori");
+                this.filter = "Connettore";
+                break;
             default:
                 break;
         }

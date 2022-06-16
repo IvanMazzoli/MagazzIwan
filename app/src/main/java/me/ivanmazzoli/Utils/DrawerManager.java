@@ -34,6 +34,7 @@ public class DrawerManager {
         SmartFragment thermalList = ListFragment.getInstance(DrawerManager.LIST_THERMAL);
         SmartFragment driveList = ListFragment.getInstance(DrawerManager.LIST_DRIVE);
         SmartFragment buttonList = ListFragment.getInstance(DrawerManager.LIST_BUTTON);
+        SmartFragment connectorList = ListFragment.getInstance(DrawerManager.LIST_CONNECTOR);
 
         // Creo gli oggetti del Drawer laterale
         drawerItems = new ArrayList<>();
@@ -41,6 +42,7 @@ public class DrawerManager {
         drawerItems.add(new DividerDrawerItem());
         drawerItems.add(getItemFromFragment(driveList));
         drawerItems.add(getItemFromFragment(cableList));
+        drawerItems.add(getItemFromFragment(connectorList));
         drawerItems.add(getItemFromFragment(plcList));
         drawerItems.add(getItemFromFragment(buttonList));
         drawerItems.add(getItemFromFragment(thermalList));
@@ -55,6 +57,7 @@ public class DrawerManager {
         drawerFragments.add(thermalList);
         drawerFragments.add(driveList);
         drawerFragments.add(buttonList);
+        drawerFragments.add(connectorList);
         drawerFragments.add(AboutFragment.getInstance());
     }
 
@@ -148,4 +151,5 @@ public class DrawerManager {
     public static long LIST_THERMAL = 5;
     public static long LIST_DRIVE = 6;
     public static long LIST_BUTTON = 7;
+    public static long LIST_CONNECTOR = 8;
 }
