@@ -17,6 +17,7 @@ public class SmartFragment extends Fragment {
     private String drawerTitle = "DEBUG";
     private String activityTitle = "DEBUG";
     private boolean hideToolbarElevation = false;
+    private String query;
 
     /**
      * Metodo per ottenere l'icona da mostrare nel drawer laterale
@@ -114,6 +115,14 @@ public class SmartFragment extends Fragment {
      */
     public void setOnFragmentChangeRequest(OnFragmentChangeRequest callback) {
         this.callback = callback;
+    }
+
+    public String getSearchQuery() {
+        return query;
+    }
+
+    public void setSearchQuery(String query) {
+        this.query = query;
     }
 
     /**

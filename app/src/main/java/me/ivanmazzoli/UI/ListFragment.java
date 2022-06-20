@@ -40,6 +40,7 @@ import me.ivanmazzoli.ItemAdapter;
 import me.ivanmazzoli.R;
 import me.ivanmazzoli.SmartFragment;
 import me.ivanmazzoli.Utils.CommonUtils;
+import me.ivanmazzoli.Utils.DrawerManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -53,9 +54,9 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
     // Variabili classe
     private final List<IlpraItem> pois = new ArrayList<>();
     private static ListFragment fragment;
+    private DrawerManager drawerManager;
     private SearchView searchView;
     private ItemAdapter adapter;
-    private String query;
     private String filter;
 
     public ListFragment() {
@@ -124,6 +125,7 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        drawerManager = DrawerManager.getInstance(getActivity());
     }
 
     @Override
@@ -141,7 +143,7 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
         setupList();
 
         if (savedInstanceState != null)
-            query = savedInstanceState.getString("search");
+            setSearchQuery(savedInstanceState.getString("search"));
 
         // Restituisco la view del fragment
         return view;
@@ -151,6 +153,7 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("search", searchView.getQuery().toString());
+        drawerManager.updateFragmentSearch(this, getSearchQuery());
     }
 
     /**
@@ -193,8 +196,8 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
             return true;
         });*/
 
-        if (query != null && !query.equals("")) {
-            searchView.setQuery(query, true);
+        if (getSearchQuery() != null && !getSearchQuery().equals("")) {
+            searchView.setQuery(getSearchQuery(), true);
             searchView.setIconified(false);
         }
     }
@@ -207,6 +210,10 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
      */
     @Override
     public boolean onQueryTextSubmit(String query) {
+
+        setSearchQuery(query);
+        drawerManager.updateFragmentSearch(this, query);
+
         // Se non ho POI mi fermo
         if (pois.size() == 0)
             return true;
@@ -226,6 +233,10 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
      */
     @Override
     public boolean onQueryTextChange(String query) {
+
+        setSearchQuery(query);
+        drawerManager.updateFragmentSearch(this, query);
+
         // Se non ho POI mi fermo
         if (pois.size() == 0)
             return true;

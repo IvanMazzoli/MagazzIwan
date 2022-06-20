@@ -126,6 +126,19 @@ public class DrawerManager {
         return null;
     }
 
+    public void updateFragmentSearch(SmartFragment listFragment, String query) {
+        for (Object tipsyFragment : drawerFragments) {
+            SmartFragment fragment = (SmartFragment) tipsyFragment;
+            if (fragment.getDrawerID() == listFragment.getDrawerID())
+                fragment.setSearchQuery(query);
+        }
+    }
+
+    public void resetSearchQueries() {
+        for (Object tipsyFragment : drawerFragments)
+            ((SmartFragment) tipsyFragment).setSearchQuery(null);
+    }
+
     /**
      * Metodo per ottenere un Drawer Item da un Fragment
      *

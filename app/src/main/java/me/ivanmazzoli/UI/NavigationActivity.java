@@ -44,6 +44,7 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
 
     // Variabili classe
     private final String SELECTED_ID = "selectedID";
+    private long lastSelection;
     private Drawer drawer;
 
     @Override
@@ -71,8 +72,8 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
         if (savedInstanceState == null) {
             drawer.setSelection(DrawerManager.LIST_FULL, true);
         } else {
-            long selectedID = savedInstanceState.getLong(SELECTED_ID);
-            drawer.setSelection(selectedID, true);
+            lastSelection = savedInstanceState.getLong(SELECTED_ID);
+            drawer.setSelection(lastSelection, true);
         }
 
         // Controllo se ho un update della app
@@ -174,6 +175,9 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
 
     @Override
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+
+        if (drawerItem.getIdentifier() != lastSelection)
+            DrawerManager.getInstance(this).resetSearchQueries();
 
         // Ottengo il fragment legato al Drawer laterale
         Object fragment = DrawerManager.getInstance(this)
