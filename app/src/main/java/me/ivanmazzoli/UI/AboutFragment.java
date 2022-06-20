@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import de.cketti.library.changelog.ChangeLog;
 import me.ivanmazzoli.R;
 import me.ivanmazzoli.SmartFragment;
 import me.ivanmazzoli.Utils.DrawerManager;
@@ -63,6 +64,8 @@ public class AboutFragment extends SmartFragment {
             shareIntent.setType("text/plain");
             startActivity(Intent.createChooser(shareIntent, "Condividi con:"));
         });
+
+        view.findViewById(R.id.btnChangelog).setOnClickListener(v -> new ChangeLog(getContext()).getFullLogDialog().show());
 
         return view;
     }

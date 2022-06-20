@@ -51,4 +51,5 @@ dependencies {
     implementation 'com.pnikosis:materialish-progress:1.7'
     implementation 'com.jakewharton:butterknife:10.2.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+    implementation 'de.cketti.library.changelog:ckchangelog:1.2.2'
 }

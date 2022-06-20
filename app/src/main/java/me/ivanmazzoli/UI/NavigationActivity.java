@@ -1,5 +1,6 @@
 package me.ivanmazzoli.UI;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.cketti.library.changelog.ChangeLog;
 import me.ivanmazzoli.R;
 import me.ivanmazzoli.SmartFragment;
 import me.ivanmazzoli.Utils.DrawerManager;
@@ -44,6 +45,8 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
 
     // Variabili classe
     private final String SELECTED_ID = "selectedID";
+    private final String SHOW_POPUP = "showPopup";
+    private boolean showPopup = false;
     private long lastSelection;
     private Drawer drawer;
 
@@ -73,7 +76,16 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
             drawer.setSelection(DrawerManager.LIST_FULL, true);
         } else {
             lastSelection = savedInstanceState.getLong(SELECTED_ID);
+            showPopup = savedInstanceState.getBoolean(SHOW_POPUP);
             drawer.setSelection(lastSelection, true);
+        }
+
+        ChangeLog cl = new ChangeLog(this);
+        if (cl.isFirstRun() || showPopup) {
+            showPopup = true;
+            AlertDialog ad = cl.getLogDialog();
+            ad.setOnDismissListener(dialog -> showPopup = false);
+            ad.show();
         }
 
         // Controllo se ho un update della app
@@ -162,6 +174,7 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putLong(SELECTED_ID, drawer.getCurrentSelection());
+        savedInstanceState.putBoolean(SHOW_POPUP, showPopup);
     }
 
     @Override
