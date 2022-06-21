@@ -9,6 +9,7 @@ public class IlpraItem {
     private String location;
     private String type;
     private String image_url;
+    private String docs;
 
     /**
      * Costruttore base classe
@@ -48,5 +49,9 @@ public class IlpraItem {
 
     public String getImageUrl() {
         return this.image_url;
+    }
+
+    public String getDocs() {
+        return this.docs;
     }
 }

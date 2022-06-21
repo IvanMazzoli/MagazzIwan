@@ -9,15 +9,18 @@
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/drawable/ic_noun_warehouse_2187120.xml" value="0.2445" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/layout/activity_navigation.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/layout/activity_pdf.xml" value="0.22592592592592592" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/layout/activity_splash.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/layout/dialog_zoom.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/layout/fragment_about.xml" value="0.21331521739130435" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/layout/fragment_list.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/layout/item_product.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/layout/layout_drawer_header.xml" value="0.253125" />
+        <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/menu/open_externally.xml" value="0.22592592592592592" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/menu/search.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/menu/search_update.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2445" />
+        <entry key="..\:/Users/i.mazzoli/AndroidStudioProjects/MagazzIwan/app/src/main/res/xml/network_security_config.xml" value="0.22592592592592592" />
       </map>
     </option>
   </component>

@@ -4,11 +4,11 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +22,7 @@ import com.jsibbold.zoomage.ZoomageView;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ivanmazzoli.UI.PdfActivity;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
@@ -67,6 +68,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                     .into(picture);
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setView(layout);
+
+            if (poiList.get(position).getDocs() != null)
+                builder.setPositiveButton("Apri Documentazione", (dialog, which) -> {
+                    Intent docs = new Intent(context, PdfActivity.class);
+                    docs.putExtra("docUrl", poiList.get(position).getDocs());
+                    docs.putExtra("docName", poiList.get(position).getMakeCode());
+                    context.startActivity(docs);
+                });
+
             Dialog dialog = builder.create();
             dialog.show();
         });
