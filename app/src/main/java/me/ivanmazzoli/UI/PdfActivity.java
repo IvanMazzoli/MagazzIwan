@@ -53,6 +53,14 @@ public class PdfActivity extends AppCompatActivity {
 
         String fileName = getIntent().getStringExtra("docName") + ".pdf";
         String dirPath = getApplicationContext().getFilesDir().getAbsolutePath();
+
+        // Controllo se già esiste
+        File file = new File(dirPath, fileName);
+        if (file.exists()) {
+            displayPdfFromFile(file);
+            return;
+        }
+
         PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
                 .setReadTimeout(30_000)
                 .setConnectTimeout(30_000)
@@ -71,16 +79,7 @@ public class PdfActivity extends AppCompatActivity {
                 .start(new OnDownloadListener() {
                     @Override
                     public void onDownloadComplete() {
-                        File downloadedFile = new File(dirPath, fileName);
-                        progressBar.setVisibility(View.GONE);
-                        progressText.setVisibility(View.GONE);
-                        pdfView.fromFile(downloadedFile)
-                                .password(null)
-                                .defaultPage(0)
-                                .enableSwipe(true)
-                                .swipeHorizontal(false)
-                                .enableDoubletap(true)
-                                .onPageError((page, t) -> Toast.makeText(PdfActivity.this, "Errore alla pagina $page", Toast.LENGTH_LONG).show()).load();
+                        displayPdfFromFile(new File(dirPath, fileName));
                     }
 
                     @Override
@@ -89,6 +88,18 @@ public class PdfActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+
+    public void displayPdfFromFile(File pdf) {
+        progressBar.setVisibility(View.GONE);
+        progressText.setVisibility(View.GONE);
+        pdfView.fromFile(pdf)
+                .password(null)
+                .defaultPage(0)
+                .enableSwipe(true)
+                .swipeHorizontal(false)
+                .enableDoubletap(true)
+                .onPageError((page, t) -> Toast.makeText(PdfActivity.this, "Errore alla pagina $page", Toast.LENGTH_LONG).show()).load();
     }
 
     public String getProgressDisplayLine(long currentBytes, long totalBytes) {
