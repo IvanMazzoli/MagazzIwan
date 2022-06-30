@@ -362,5 +362,9 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
         recyclerView.setAdapter(adapter);
 
         pullToRefresh.setRefreshing(false);
+
+        // Se ho una query di ricerca cerco
+        if (getSearchQuery() != null && !getSearchQuery().equals(""))
+            onQueryTextChange(getSearchQuery());
     }
 }

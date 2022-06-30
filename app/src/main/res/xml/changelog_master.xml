@@ -2,6 +2,7 @@
 <changelog>
 
     <release version="1.4" versioncode="5" >
+        <change>Fix: Reset ricerca su pull to refresh</change>
         <change>Fix: Layout elementi lista</change>
         <change>New: Link ai manuali PDF</change>
     </release>
