@@ -9,10 +9,12 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ivanmazzoli.Models.SmartFragment;
+import me.ivanmazzoli.Models.SmartSettingsFragment;
 import me.ivanmazzoli.R;
-import me.ivanmazzoli.SmartFragment;
-import me.ivanmazzoli.UI.AboutFragment;
-import me.ivanmazzoli.UI.ListFragment;
+import me.ivanmazzoli.UI.Fragments.AboutFragment;
+import me.ivanmazzoli.UI.Fragments.ListFragment;
+import me.ivanmazzoli.UI.Fragments.SettingsFragment;
 
 public class DrawerManager {
 
@@ -35,6 +37,7 @@ public class DrawerManager {
         SmartFragment driveList = ListFragment.getInstance(DrawerManager.LIST_DRIVE);
         SmartFragment buttonList = ListFragment.getInstance(DrawerManager.LIST_BUTTON);
         SmartFragment connectorList = ListFragment.getInstance(DrawerManager.LIST_CONNECTOR);
+        SmartSettingsFragment settings = new SettingsFragment();
 
         // Creo gli oggetti del Drawer laterale
         drawerItems = new ArrayList<>();
@@ -47,6 +50,7 @@ public class DrawerManager {
         drawerItems.add(getItemFromFragment(buttonList));
         drawerItems.add(getItemFromFragment(thermalList));
         drawerItems.add(new DividerDrawerItem());
+        drawerItems.add(getItemFromFragment(settings));
         drawerItems.add(getItemFromFragment(AboutFragment.getInstance()));
 
         // Creo la lista dei fragment utilizzati nel Drawer
@@ -59,6 +63,7 @@ public class DrawerManager {
         drawerFragments.add(buttonList);
         drawerFragments.add(connectorList);
         drawerFragments.add(AboutFragment.getInstance());
+        drawerFragments.add(settings);
     }
 
     /**
@@ -115,13 +120,16 @@ public class DrawerManager {
      */
     public Object getFragmentFromID(long id) {
 
-        //if (id == SETTINGS)
-        //    return new SettingsFragment();
-
         for (Object tipsyFragment : drawerFragments) {
-            SmartFragment fragment = (SmartFragment) tipsyFragment;
-            if (fragment.getDrawerID() == id)
-                return tipsyFragment;
+            if (tipsyFragment instanceof SmartFragment) {
+                SmartFragment fragment = (SmartFragment) tipsyFragment;
+                if (fragment.getDrawerID() == id)
+                    return tipsyFragment;
+            } else {
+                SmartSettingsFragment fragment = (SmartSettingsFragment) tipsyFragment;
+                if (fragment.getDrawerID() == id)
+                    return tipsyFragment;
+            }
         }
         return null;
     }
@@ -135,8 +143,9 @@ public class DrawerManager {
     }
 
     public void resetSearchQueries() {
-        for (Object tipsyFragment : drawerFragments)
-            ((SmartFragment) tipsyFragment).setSearchQuery(null);
+        for (Object myFragment : drawerFragments)
+            if (myFragment instanceof SmartFragment)
+                ((SmartFragment) myFragment).setSearchQuery(null);
     }
 
     /**
@@ -144,16 +153,17 @@ public class DrawerManager {
      *
      * @param fragment Il fragment di partenza
      * @return IDrawerItem con le info dell'oggetto base
-     * <p>
-     * private IDrawerItem getItemFromFragment(TipsyPreferenceFragment fragment) {
-     * PrimaryDrawerItem result = new PrimaryDrawerItem();
-     * result.withIdentifier(fragment.getDrawerID());
-     * result.withName(fragment.getDrawerTitle());
-     * result.withIcon(fragment.getDrawerIcon());
-     * result.withIconTintingEnabled(true);
-     * return result;
-     * }
      */
+    private IDrawerItem getItemFromFragment(SmartSettingsFragment fragment) {
+        PrimaryDrawerItem result = new PrimaryDrawerItem();
+        result.withIdentifier(fragment.getDrawerID());
+        result.withName(fragment.getDrawerTitle());
+        result.withIcon(fragment.getDrawerIcon());
+        result.withSelectedIconColor(context.getResources().getColor(R.color.accent));
+        result.withSelectedTextColor(context.getResources().getColor(R.color.accent));
+        result.withIconTintingEnabled(true);
+        return result;
+    }
 
     // Valori drawer ID
     public static long DEBUG = 0;
@@ -165,4 +175,5 @@ public class DrawerManager {
     public static long LIST_DRIVE = 6;
     public static long LIST_BUTTON = 7;
     public static long LIST_CONNECTOR = 8;
+    public static long SETTINGS = 9;
 }

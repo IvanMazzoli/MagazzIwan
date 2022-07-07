@@ -1,4 +1,4 @@
-package me.ivanmazzoli.UI;
+package me.ivanmazzoli.UI.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -35,10 +35,10 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import me.ivanmazzoli.IlpraItem;
-import me.ivanmazzoli.ItemAdapter;
+import me.ivanmazzoli.Models.IlpraItem;
+import me.ivanmazzoli.Models.ItemAdapter;
 import me.ivanmazzoli.R;
-import me.ivanmazzoli.SmartFragment;
+import me.ivanmazzoli.Models.SmartFragment;
 import me.ivanmazzoli.Utils.CommonUtils;
 import me.ivanmazzoli.Utils.DrawerManager;
 import okhttp3.OkHttpClient;

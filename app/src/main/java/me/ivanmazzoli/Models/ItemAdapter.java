@@ -1,4 +1,4 @@
-package me.ivanmazzoli;
+package me.ivanmazzoli.Models;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -22,7 +22,8 @@ import com.jsibbold.zoomage.ZoomageView;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.ivanmazzoli.UI.PdfActivity;
+import me.ivanmazzoli.R;
+import me.ivanmazzoli.UI.Activities.PdfActivity;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {

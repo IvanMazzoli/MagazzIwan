@@ -1,4 +1,4 @@
-package me.ivanmazzoli.UI;
+package me.ivanmazzoli.UI.Fragments;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import de.cketti.library.changelog.ChangeLog;
 import me.ivanmazzoli.R;
-import me.ivanmazzoli.SmartFragment;
+import me.ivanmazzoli.Models.SmartFragment;
 import me.ivanmazzoli.Utils.DrawerManager;
 
 public class AboutFragment extends SmartFragment {

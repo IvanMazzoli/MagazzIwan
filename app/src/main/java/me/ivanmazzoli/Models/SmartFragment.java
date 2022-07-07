@@ -1,4 +1,4 @@
-package me.ivanmazzoli;
+package me.ivanmazzoli.Models;
 
 import android.content.Context;
 
@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import java.io.File;
 
+import me.ivanmazzoli.R;
 import me.ivanmazzoli.Utils.DrawerManager;
 
 public class SmartFragment extends Fragment {

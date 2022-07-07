@@ -1,4 +1,4 @@
-package me.ivanmazzoli;
+package me.ivanmazzoli.Models;
 
 public class IlpraItem {
 

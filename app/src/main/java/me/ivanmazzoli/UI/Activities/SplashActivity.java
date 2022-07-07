@@ -1,4 +1,4 @@
-package me.ivanmazzoli.UI;
+package me.ivanmazzoli.UI.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -116,7 +116,7 @@ public class SplashActivity extends AppCompatActivity {
                         .build();
 
                 // Creo la richiesta all'API endpoint
-                String api = "https://www.tipsyapp.it/ilpra/api/update.php?timestamp=" + new DateTime().getMillis();
+                String api = preferences.getDataEndpoint() + "?timestamp=" + new DateTime().getMillis();
                 Request request = new Request.Builder().url(api).build();
 
                 // Invio la richiesta dei tempi

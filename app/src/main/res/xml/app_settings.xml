@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Visualizzazione -->
+    <PreferenceCategory
+        android:icon="@drawable/ic_storage"
+        android:title="URL Server">
+
+        <EditTextPreference
+            android:defaultValue="https://www.tipsyapp.it/ilpra/api/update.php"
+            app:iconSpaceReserved="false"
+            app:key="apiEndpoint"
+            app:title="Indirizzo API"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:defaultValue="https://www.tipsyapp.it/ilpra/release/build.txt"
+            app:iconSpaceReserved="false"
+            app:key="updateEndpoint"
+            app:title="Indirizzo check update"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:defaultValue="https://www.tipsyapp.it/ilpra/release/release.apk"
+            app:iconSpaceReserved="false"
+            app:key="apkEndpoint"
+            app:title="Indirizzo APK"
+            app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            android:key="loadFromQR"
+            android:summary="Carica tutte le variabili endpoint da un codice QR auto configurante"
+            android:title="Carica config da codice QR"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="resetEndpoint"
+            android:summary="Reimposta i valori dei vari URL endpoints ai valori di default"
+            android:title="Resetta URL endpoints"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

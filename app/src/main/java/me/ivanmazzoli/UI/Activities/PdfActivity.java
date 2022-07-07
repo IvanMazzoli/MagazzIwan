@@ -1,4 +1,4 @@
-package me.ivanmazzoli.UI;
+package me.ivanmazzoli.UI.Activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

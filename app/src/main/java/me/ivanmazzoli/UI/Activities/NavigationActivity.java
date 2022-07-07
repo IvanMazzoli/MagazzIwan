@@ -1,4 +1,4 @@
-package me.ivanmazzoli.UI;
+package me.ivanmazzoli.UI.Activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,8 +29,9 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.cketti.library.changelog.ChangeLog;
+import me.ivanmazzoli.Models.SmartFragment;
+import me.ivanmazzoli.Models.SmartSettingsFragment;
 import me.ivanmazzoli.R;
-import me.ivanmazzoli.SmartFragment;
 import me.ivanmazzoli.Utils.DrawerManager;
 import me.ivanmazzoli.Utils.PreferenceHelper;
 import okhttp3.OkHttpClient;
@@ -126,7 +127,7 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
                 .build();
 
         // Creo la richiesta all'API endpoint di versione build remota
-        String api = "https://www.tipsyapp.it/ilpra/release/build.txt";
+        String api = helper.getUpdateEndpoint();
         Request request = new Request.Builder().url(api).build();
 
         // Invio la richiesta in modalità async in un nuovo thread
@@ -157,7 +158,7 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
                 builder.setMessage("Vuoi scaricare la nuova versione dell'app?")
                         .setTitle("Aggiornamento disponibile!");
                 builder.setPositiveButton("Ok", (dialog, id) -> {
-                    String url = "https://www.tipsyapp.it/ilpra/release/release.apk";
+                    String url = helper.getApkEndpoint();
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
@@ -216,7 +217,9 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
             else
                 getSupportActionBar().setElevation(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
         } else {
-            //fragmentTransaction.replace(R.id.navigationContainer, (TipsyPreferenceFragment) fragment);
+            getSupportActionBar().setElevation(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics()));
+            fragmentTransaction.replace(R.id.navigationContainer, (SmartSettingsFragment) fragment);
+            toolbar.setTitle(((SmartSettingsFragment) fragment).getActivityTitle());
         }
 
         // Cambio il fragment
