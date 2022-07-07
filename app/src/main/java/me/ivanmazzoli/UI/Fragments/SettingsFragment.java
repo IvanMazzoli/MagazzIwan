@@ -79,7 +79,7 @@ public class SettingsFragment extends SmartSettingsFragment {
                         }
                     }
                 });
-        
+
         findPreference("apiEndpoint").setOnPreferenceChangeListener((preference, newValue) -> {
             if (!validateUrl(String.valueOf(newValue))) {
                 Toast.makeText(getActivity(), "Controlla l'URL e riprova!", Toast.LENGTH_LONG).show();

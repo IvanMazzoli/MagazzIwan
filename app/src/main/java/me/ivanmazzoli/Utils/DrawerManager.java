@@ -136,9 +136,11 @@ public class DrawerManager {
 
     public void updateFragmentSearch(SmartFragment listFragment, String query) {
         for (Object tipsyFragment : drawerFragments) {
-            SmartFragment fragment = (SmartFragment) tipsyFragment;
-            if (fragment.getDrawerID() == listFragment.getDrawerID())
-                fragment.setSearchQuery(query);
+            if (tipsyFragment instanceof SmartFragment) {
+                SmartFragment fragment = (SmartFragment) tipsyFragment;
+                if (fragment.getDrawerID() == listFragment.getDrawerID())
+                    fragment.setSearchQuery(query);
+            }
         }
     }
 
