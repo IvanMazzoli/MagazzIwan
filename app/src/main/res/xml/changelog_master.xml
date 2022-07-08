@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.5" versioncode="6" >
+        <change>Fix: Corretto IOException: Cleartext HTTP traffic to * not permitted</change>
+        <change>New: URL endpoint configurabili da app</change>
+    </release>
+
     <release version="1.4" versioncode="5" >
         <change>Fix: Reset ricerca su pull to refresh</change>
         <change>Fix: Layout elementi lista</change>
