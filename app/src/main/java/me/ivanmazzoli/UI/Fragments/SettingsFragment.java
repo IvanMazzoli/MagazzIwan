@@ -1,15 +1,20 @@
 package me.ivanmazzoli.UI.Fragments;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,7 +25,10 @@ import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.jsibbold.zoomage.ZoomageView;
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 import me.ivanmazzoli.Models.SmartSettingsFragment;
 import me.ivanmazzoli.R;
 import me.ivanmazzoli.UI.Activities.QrCodeActivity;
@@ -132,6 +140,25 @@ public class SettingsFragment extends SmartSettingsFragment {
                     } else {
                         requestPermission();
                     }
+                    return false;
+                });
+
+        findPreference("showQR").
+                setOnPreferenceClickListener(preference -> {
+                    String config = "{\"apiEndpoint\":\"%s\",\"updateEndpoint\":\"%s\",\"apkEndpoint\":\"%s\"}";
+                    config = String.format(config, ph.getDataEndpoint(), ph.getUpdateEndpoint(), ph.getApkEndpoint());
+                    QRGEncoder qrgEncoder = new QRGEncoder(config, null, QRGContents.Type.TEXT, 512);
+                    Bitmap bitmap = qrgEncoder.getBitmap();
+                    LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View layout = inflater.inflate(R.layout.dialog_zoom, null);
+                    ZoomageView picture = layout.findViewById(R.id.zoomImage);
+                    picture.setImageBitmap(bitmap);
+                    androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
+                    builder.setView(layout);
+                    builder.setPositiveButton("Chiudi", (dialog, which) -> {
+                    });
+                    Dialog dialog = builder.create();
+                    dialog.show();
                     return false;
                 });
     }

@@ -29,6 +29,12 @@
             app:useSimpleSummaryProvider="true" />
 
         <Preference
+            android:key="showQR"
+            android:summary="Mostra il codice QR auto configurante con gli endpoint impostati in app"
+            android:title="Mostra codice QR config"
+            app:iconSpaceReserved="false" />
+
+        <Preference
             android:key="loadFromQR"
             android:summary="Carica tutte le variabili endpoint da un codice QR auto configurante"
             android:title="Carica config da codice QR"
