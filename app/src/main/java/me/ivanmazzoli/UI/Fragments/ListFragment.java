@@ -41,6 +41,7 @@ import me.ivanmazzoli.R;
 import me.ivanmazzoli.Models.SmartFragment;
 import me.ivanmazzoli.Utils.CommonUtils;
 import me.ivanmazzoli.Utils.DrawerManager;
+import me.ivanmazzoli.Utils.PreferenceHelper;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -286,7 +287,8 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
                         .build();
 
                 // Creo la richiesta all'API endpoint
-                String api = "https://www.tipsyapp.it/ilpra/api/update.php?timestamp=" + new DateTime().getMillis();
+                PreferenceHelper helper = PreferenceHelper.getInstance(getActivity());
+                String api = helper.getDataEndpoint() + "?timestamp=" + new DateTime().getMillis();
                 Request request = new Request.Builder().url(api).build();
 
                 // Invio la richiesta dei tempi
