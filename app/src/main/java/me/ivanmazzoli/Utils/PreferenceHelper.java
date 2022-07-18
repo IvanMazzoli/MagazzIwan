@@ -5,6 +5,10 @@ import android.content.SharedPreferences;
 
 import org.joda.time.DateTime;
 
+import java.util.Arrays;
+
+import me.ivanmazzoli.R;
+
 public class PreferenceHelper {
 
     private final String FAV_FRAGMENT = "launchScreen";
@@ -50,7 +54,21 @@ public class PreferenceHelper {
      * @return ID Fragment scelto dall'utente, Dashboard se non modificato
      */
     public long getFavouriteFragment() {
-        return Long.parseLong(preferences.getString(FAV_FRAGMENT, "10"));
+        return Long.parseLong(preferences.getString(FAV_FRAGMENT, "1"));
+    }
+
+    public String getFavouriteFragmentName() {
+        String[] texts = context.getResources().getStringArray(R.array.launchScreenTexts);
+        String[] values = context.getResources().getStringArray(R.array.launchScreenValues);
+        int index = Arrays.asList(values).indexOf(String.valueOf(getFavouriteFragment()));
+        return texts[index];
+    }
+
+    public String getFragmentName(String fav) {
+        String[] texts = context.getResources().getStringArray(R.array.launchScreenTexts);
+        String[] values = context.getResources().getStringArray(R.array.launchScreenValues);
+        int index = Arrays.asList(values).indexOf(fav);
+        return texts[index];
     }
 
     /**

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="launchScreenTexts">
+        <item>@string/all_items</item>
+        <item>@string/drives</item>
+        <item>@string/cables</item>
+        <item>@string/connectors</item>
+        <item>@string/plc_exp</item>
+        <item>@string/buttons_accessories</item>
+        <item>@string/thermal</item>
+    </string-array>
+
+    <string-array name="launchScreenValues">
+        <item>1</item>
+        <item>6</item>
+        <item>4</item>
+        <item>8</item>
+        <item>3</item>
+        <item>7</item>
+        <item>5</item>
+    </string-array>
+
+</resources>

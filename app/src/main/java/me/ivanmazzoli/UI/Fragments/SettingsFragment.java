@@ -22,6 +22,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.preference.Preference;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -161,6 +162,16 @@ public class SettingsFragment extends SmartSettingsFragment {
                     dialog.show();
                     return false;
                 });
+
+        findPreference("launchScreen").setSummary(
+                String.format("Scegli la schermata di default lanciata all'avvio\n\n• Schermata: %s",
+                        ph.getFavouriteFragmentName()));
+        findPreference("launchScreen").setOnPreferenceChangeListener((preference, newValue) -> {
+            preference.setSummary(
+                    String.format("Scegli la schermata di default lanciata all'avvio\n\n• Schermata: %s",
+                            ph.getFragmentName((String) newValue)));
+            return true;
+        });
     }
 
     @Override

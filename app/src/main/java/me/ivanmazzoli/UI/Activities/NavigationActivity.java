@@ -71,10 +71,10 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
                 .withOnDrawerItemClickListener(this)
                 .build();
 
-        // Se non ho una SavedInstance carico la lista completa,
+        // Se non ho una SavedInstance carico la lista scelta dall'utente,
         // altrimenti carico la SavedInstance e mostro il fragment precedente
         if (savedInstanceState == null) {
-            drawer.setSelection(DrawerManager.LIST_FULL, true);
+            drawer.setSelection(PreferenceHelper.getInstance(this).getFavouriteFragment(), true);
         } else {
             lastSelection = savedInstanceState.getLong(SELECTED_ID);
             showPopup = savedInstanceState.getBoolean(SHOW_POPUP);

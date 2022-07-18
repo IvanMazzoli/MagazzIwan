@@ -10,4 +10,11 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="all_items">Tutti gli articoli</string>
+    <string name="drives">Azionamenti</string>
+    <string name="cables">Cavi</string>
+    <string name="connectors">Connettori</string>
+    <string name="plc_exp">PLC ed espansioni</string>
+    <string name="buttons_accessories">Pulsanti e gemme</string>
+    <string name="thermal">Termiche salvamotore</string>
 </resources>

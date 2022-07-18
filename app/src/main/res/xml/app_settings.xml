@@ -4,6 +4,22 @@
 
     <!-- Visualizzazione -->
     <PreferenceCategory
+        android:icon="@drawable/ic_style"
+        android:title="Visualizzazione">
+
+        <!-- Schermata predefinita all'avvio -->
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/launchScreenTexts"
+            android:entryValues="@array/launchScreenValues"
+            android:key="launchScreen"
+            android:title="Schermata d'avvio"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <!-- URL -->
+    <PreferenceCategory
         android:icon="@drawable/ic_storage"
         android:title="URL Server">
 
