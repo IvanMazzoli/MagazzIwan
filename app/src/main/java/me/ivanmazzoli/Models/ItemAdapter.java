@@ -105,6 +105,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
                 .error(R.drawable.ic_android)
                 .dontAnimate()
                 .into(holder.picture);
+
+        if (poi.getDocs() != null)
+            holder.docs.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -173,6 +176,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         final TextView maker;
         final TextView ilpraInfo;
         final ImageView picture;
+        final ImageView docs;
 
         ItemAdapter poi;
         ViewHolderClicks listener;
@@ -194,6 +198,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             this.maker = view.findViewById(R.id.maker);
             this.ilpraInfo = view.findViewById(R.id.ilpraInfo);
             this.picture = view.findViewById(R.id.itemPic);
+            this.docs = view.findViewById(R.id.imgDocs);
 
             this.picture.setOnClickListener(this);
         }

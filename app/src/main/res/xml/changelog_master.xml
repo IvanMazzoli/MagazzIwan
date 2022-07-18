@@ -4,6 +4,7 @@
     <release version="1.6" versioncode="7" >
         <change>Fix: Corretta persistenza database Json</change>
         <change>New: Schermata d'avvio selezionabile da Impostazioni</change>
+        <change>New: Aggiunta icona PDF per articoli con documentazione allegata</change>
     </release>
 
     <release version="1.5" versioncode="6" >
