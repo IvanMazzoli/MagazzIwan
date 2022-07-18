@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,6 +48,7 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
     // Variabili classe
     private final String SELECTED_ID = "selectedID";
     private final String SHOW_POPUP = "showPopup";
+    private boolean appCloseRequested = false;
     private boolean showPopup = false;
     private long lastSelection;
     private Drawer drawer;
@@ -236,5 +238,31 @@ public class NavigationActivity extends AppCompatActivity implements Drawer.OnDr
         invalidateOptionsMenu();
 
         return true;
+    }
+
+    /**
+     * Metodo per gestire il click sul tasto indietro del dispositivo
+     */
+    public void onBackPressed() {
+
+        // Decido se chiudere l'app o tornare alla dashboard
+        if (drawer == null || !drawer.isDrawerOpen()) {
+            assert drawer != null;
+            if (drawer.getCurrentSelection() != DrawerManager.LIST_FULL) {
+                drawer.setSelection(DrawerManager.LIST_FULL, true);
+            } else {
+                if (!appCloseRequested) {
+                    appCloseRequested = true;
+                    Toast.makeText(this, "Premi di nuovo per uscire", Toast.LENGTH_LONG).show();
+                    new Handler().postDelayed(() -> appCloseRequested = false, 3000);
+                } else {
+                    super.onBackPressed();
+                }
+            }
+            return;
+        }
+
+        // Chiudo il drawer
+        drawer.closeDrawer();
     }
 }

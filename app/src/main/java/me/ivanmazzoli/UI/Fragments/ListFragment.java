@@ -37,8 +37,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.ivanmazzoli.Models.IlpraItem;
 import me.ivanmazzoli.Models.ItemAdapter;
-import me.ivanmazzoli.R;
 import me.ivanmazzoli.Models.SmartFragment;
+import me.ivanmazzoli.R;
 import me.ivanmazzoli.Utils.CommonUtils;
 import me.ivanmazzoli.Utils.DrawerManager;
 import me.ivanmazzoli.Utils.PreferenceHelper;
@@ -153,7 +153,11 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("search", searchView.getQuery().toString());
+        try {
+            outState.putString("search", searchView.getQuery().toString());
+        } catch (NullPointerException ignored) {
+            outState.putString("search", null);
+        }
         drawerManager.updateFragmentSearch(this, getSearchQuery());
     }
 

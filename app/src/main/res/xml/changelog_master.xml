@@ -3,7 +3,9 @@
 
     <release version="1.6" versioncode="7" >
         <change>Fix: Corretta persistenza database Json</change>
+        <change>Fix: Corretto crash su liste vuote</change>
         <change>New: Schermata d'avvio selezionabile da Impostazioni</change>
+        <change>New: Gestito pulsante indietro per cambio schermata</change>
         <change>New: Aggiunta icona PDF per articoli con documentazione allegata</change>
     </release>
 
