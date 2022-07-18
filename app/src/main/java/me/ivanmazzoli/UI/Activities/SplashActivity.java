@@ -76,8 +76,8 @@ public class SplashActivity extends AppCompatActivity {
             startApp(true);
 
         // Converto in JsonObject
-        //long last = object.get("updated").getAsLong();
-        //DateTime lastUpd = new DateTime().withMillis(last);
+        long last = object.get("updated").getAsLong();
+        DateTime lastUpd = new DateTime().withMillis(last);
         String asset;
         try {
             InputStream in = this.getAssets().open(filename);
@@ -88,12 +88,12 @@ public class SplashActivity extends AppCompatActivity {
             return;
         }
         object = gson.fromJson(asset, JsonObject.class);
-//        final long ass = object.get("updated").getAsLong();
-        // DateTime assetUpd = new DateTime().withMillis(ass);
+        final long ass = object.get("updated").getAsLong();
+        DateTime assetUpd = new DateTime().withMillis(ass);
 
         // Se l'asset è più recente sovrascrivo
-        // if (last != ass && assetUpd.isAfter(lastUpd))
-        CommonUtils.getInstance(this).copyFile("data.json");
+        if (last != ass && assetUpd.isAfter(lastUpd))
+            CommonUtils.getInstance(this).copyFile("data.json");
 
         // Controllo la connessione ad internet
         NetworkInfo netInfo = ((ConnectivityManager)

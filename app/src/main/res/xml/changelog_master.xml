@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.6" versioncode="7" >
+        <change>Fix: Corretta persistenza database Json</change>
+    </release>
+
     <release version="1.5" versioncode="6" >
         <change>Fix: Corretto IOException: Cleartext HTTP traffic to * not permitted</change>
         <change>New: URL endpoint configurabili da app</change>
