@@ -15,6 +15,12 @@
             android:key="launchScreen"
             android:title="Schermata d'avvio"
             app:iconSpaceReserved="false" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="enableAlwaysOn"
+            android:summary="Se abilitato lo schermo non andrà in timeout durante la lettura della documentazione in PDF di un articolo"
+            android:title="Schermo sempre acceso"
+            app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
 

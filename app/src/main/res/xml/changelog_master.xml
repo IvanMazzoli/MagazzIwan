@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="1.7" versioncode="8" >
+    <release
+        version="1.7"
+        versioncode="8">
         <change>Fix: Corretta icona documentazione ripetuta su scroll lista</change>
         <change>New: Reimplementazione custom lettore PDF</change>
         <change>New: Ridotte dimensioni complessive app</change>
+        <change>New: Aggiunta opzione schermo always on per documentazione</change>
     </release>
 
-    <release version="1.6" versioncode="7" >
+    <release
+        version="1.6"
+        versioncode="7">
         <change>Fix: Corretta persistenza database Json</change>
         <change>Fix: Corretto crash su liste vuote</change>
         <change>New: Schermata d'avvio selezionabile da Impostazioni</change>
@@ -15,30 +20,40 @@
         <change>New: Aggiunta icona PDF per articoli con documentazione allegata</change>
     </release>
 
-    <release version="1.5" versioncode="6" >
+    <release
+        version="1.5"
+        versioncode="6">
         <change>Fix: Corretto IOException: Cleartext HTTP traffic to * not permitted</change>
         <change>New: URL endpoint configurabili da app</change>
     </release>
 
-    <release version="1.4" versioncode="5" >
+    <release
+        version="1.4"
+        versioncode="5">
         <change>Fix: Reset ricerca su pull to refresh</change>
         <change>Fix: Layout elementi lista</change>
         <change>New: Link ai manuali PDF</change>
     </release>
 
-    <release version="1.3" versioncode="4" >
+    <release
+        version="1.3"
+        versioncode="4">
         <change>Fix: Visualizzazione titoli articoli</change>
         <change>Fix: Ricerca persa su modifica orientamento</change>
         <change>New: Sezione "Connettori"</change>
         <change>New: ChangeLog App</change>
     </release>
 
-    <release version="1.2" versioncode="3" >
+    <release
+        version="1.2"
+        versioncode="3">
         <change>Fix: Stato liste</change>
         <change>New: Sezioni componenti</change>
     </release>
 
-    <release version="1.0" versioncode="1">
+    <release
+        version="1.0"
+        versioncode="1">
         <change>Prima release</change>
     </release>
 

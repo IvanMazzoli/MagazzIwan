@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.ivanmazzoli.R;
 import me.ivanmazzoli.Utils.OnSwipeListener;
+import me.ivanmazzoli.Utils.PreferenceHelper;
 
 @SuppressLint("NonConstantResourceId")
 public class PdfActivity extends AppCompatActivity {
@@ -64,12 +66,16 @@ public class PdfActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pdf);
         ButterKnife.bind(this);
 
-        // Mostro solo in portait mode
+        // Mostro solo in portrait mode
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Sostituisco l'Action Bar con una Toolbar
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setElevation(0F);
+
+        // Se ho l'always on dello schermo lo attivo
+        if (PreferenceHelper.getInstance(this).getScreenAlwaysOn())
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Rinomino la toolbar ed aggiungo il back button
         Objects.requireNonNull(getSupportActionBar()).setTitle("Documentazione articolo");

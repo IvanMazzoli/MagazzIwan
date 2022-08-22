@@ -24,6 +24,7 @@ public class PreferenceHelper {
     private final String URL_API = "apiEndpoint";
     private final String URL_UPDATE = "updateEndpoint";
     private final String URL_APK = "apkEndpoint";
+    private final String ALWAYS_ON = "enableAlwaysOn";
 
 
     private static Context context;
@@ -227,5 +228,9 @@ public class PreferenceHelper {
 
     public String getApkEndpoint() {
         return preferences.getString(instance.URL_APK, "https://www.tipsyapp.it/ilpra/release/release.apk");
+    }
+
+    public boolean getScreenAlwaysOn() {
+        return preferences.getBoolean(ALWAYS_ON, true);
     }
 }
