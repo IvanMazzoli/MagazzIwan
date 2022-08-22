@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +29,7 @@ import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
-import com.github.barteksc.pdfviewer.PDFView;
+import com.jsibbold.zoomage.ZoomageView;
 
 import java.io.File;
 import java.util.Locale;
@@ -35,6 +38,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.ivanmazzoli.R;
+import me.ivanmazzoli.Utils.OnSwipeListener;
 
 @SuppressLint("NonConstantResourceId")
 public class PdfActivity extends AppCompatActivity {
@@ -45,10 +49,13 @@ public class PdfActivity extends AppCompatActivity {
     @BindView(R.id.txtCurrentPage) EditText currentPage;
     @BindView(R.id.txtTotalPages) TextView totalPages;
     @BindView(R.id.pdfControls) View pdfControls;
-    @BindView(R.id.pdfView) PDFView pdfView;
+    @BindView(R.id.pdfView) ZoomageView pdfView;
     @BindView(R.id.toolbar) Toolbar toolbar;
 
     // Variabili classe
+    private PdfRenderer renderer;
+    private int currentPageCount;
+    private int totalPageCount;
     private String pdfUrl;
 
     @Override
@@ -126,6 +133,19 @@ public class PdfActivity extends AppCompatActivity {
     }
 
     /**
+     * Metodo chiamato quando l'activity viene distrutta
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Se ho un renderer lo chiudo
+        if (renderer != null) {
+            renderer.close();
+        }
+    }
+
+
+    /**
      * Metodo per impostare il menù sulla toolbar
      *
      * @param menu Menu da impostare
@@ -167,6 +187,7 @@ public class PdfActivity extends AppCompatActivity {
      *
      * @param pdf File pdf da mostrare
      */
+    @SuppressLint("ClickableViewAccessibility")
     public void displayPdfFromFile(File pdf) {
 
         // Mostro/nascondo le view necessarie
@@ -175,18 +196,56 @@ public class PdfActivity extends AppCompatActivity {
         pdfControls.setVisibility(View.VISIBLE);
 
         // Apro e mostro il PDF
-        pdfView.fromFile(pdf)
-                .password(null)
-                .defaultPage(0)
-                .enableSwipe(true)
-                .swipeHorizontal(false)
-                .enableDoubletap(true)
-                .onPageChange((page, pageCount) -> {
-                    currentPage.setText(String.valueOf(page + 1));
-                    totalPages.setText("/" + pageCount);
-                })
-                .onPageError((page, t) -> Toast.makeText(PdfActivity.this, "Errore alla pagina $page", Toast.LENGTH_LONG).show())
-                .load();
+        try {
+            ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(Uri.fromFile(pdf), "r");
+            renderer = new PdfRenderer(parcelFileDescriptor);
+            totalPageCount = renderer.getPageCount();
+            totalPages.setText("/" + totalPageCount);
+            currentPageCount = 0;
+            jumpToPage(currentPageCount);
+        } catch (Exception e) {
+            Toast.makeText(PdfActivity.this, "Errore durante la visualizzazione", Toast.LENGTH_LONG).show();
+        }
+
+        // Aggiungo un listener per lo swipe sulla view del PDF se ho più di una pagina
+        if (totalPageCount > 1)
+            pdfView.setOnTouchListener(new OnSwipeListener(this) {
+                @SuppressLint("ClickableViewAccessibility")
+                public void onSwipeUp() {
+                    // Se sono a fine PDF mi fermo
+                    if (currentPageCount == (totalPageCount - 1))
+                        return;
+
+                    // Se ho zoommato ignoro il movimento
+                    if (pdfView.getCurrentScaleFactor() != 1F)
+                        return;
+
+                    // Aggiorno il numero di pagina
+                    jumpToPage(currentPageCount + 1);
+                }
+
+                @SuppressLint("ClickableViewAccessibility")
+                public void onSwipeDown() {
+                    // Se sono ad inizio PDF mi fermo
+                    if (currentPageCount == 0)
+                        return;
+
+                    // Se ho zoommato ignoro il movimento
+                    if (pdfView.getCurrentScaleFactor() != 1F)
+                        return;
+
+                    // Aggiorno il numero di pagina
+                    jumpToPage(currentPageCount - 1);
+                }
+
+                @SuppressLint("ClickableViewAccessibility")
+                public void onSwipeRight() {
+                }
+
+                @SuppressLint("ClickableViewAccessibility")
+                public void onSwipeLeft() {
+                }
+            });
 
         // Aggiungo un listener per il fine edit del numero di pagina corrente
         currentPage.setOnEditorActionListener((view, actionId, event) -> {
@@ -200,7 +259,7 @@ public class PdfActivity extends AppCompatActivity {
                     try {
                         jumpToPage(Integer.parseInt(view.getText().toString()) - 1);
                     } catch (Exception ignored) {
-                        view.setText(String.valueOf(pdfView.getCurrentPage() + 1));
+                        view.setText(String.valueOf(currentPageCount + 1));
                     }
                     return true;
                 }
@@ -216,7 +275,15 @@ public class PdfActivity extends AppCompatActivity {
      * @param pageNo numero di pagina (0 > max) verso la quale spostarsi
      */
     public void jumpToPage(int pageNo) {
-        pdfView.jumpTo(pageNo);
+        if (renderer != null) {
+            PdfRenderer.Page page = renderer.openPage(pageNo);
+            Bitmap mBitmap = Bitmap.createBitmap(page.getWidth() * 2, page.getHeight() * 2, Bitmap.Config.ARGB_8888);
+            page.render(mBitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+            pdfView.setImageBitmap(mBitmap);
+            currentPage.setText(String.valueOf(pageNo + 1));
+            currentPageCount = pageNo;
+            page.close();
+        }
         currentPage.clearFocus();
     }
 
@@ -240,6 +307,4 @@ public class PdfActivity extends AppCompatActivity {
     private String getBytesToMBString(long bytes) {
         return String.format(Locale.ENGLISH, "%.2fMb", bytes / (1024.00 * 1024.00));
     }
-
-
 }
