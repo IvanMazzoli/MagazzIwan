@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.7" versioncode="8" >
+        <change>Fix: Corretta icona documentazione ripetuta su scroll lista</change>
+    </release>
+
     <release version="1.6" versioncode="7" >
         <change>Fix: Corretta persistenza database Json</change>
         <change>Fix: Corretto crash su liste vuote</change>

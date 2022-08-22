@@ -108,6 +108,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         if (poi.getDocs() != null)
             holder.docs.setVisibility(View.VISIBLE);
+        else
+            holder.docs.setVisibility(View.GONE);
     }
 
     /**
@@ -178,7 +180,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         final ImageView picture;
         final ImageView docs;
 
-        ItemAdapter poi;
         ViewHolderClicks listener;
 
 
