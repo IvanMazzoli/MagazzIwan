@@ -147,6 +147,12 @@ public class SplashActivity extends AppCompatActivity {
                     runOnUiThread(() -> startApp(false));
                 }
 
+                // Controllo se l'object è null
+                if (object == null) {
+                    runOnUiThread(() -> startApp(false));
+                    return;
+                }
+
                 // Controllo se devo aggiornare i dati dell'app
                 if (!object.get("status").getAsString().equals("update_available")) {
                     runOnUiThread(() -> startApp(false));

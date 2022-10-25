@@ -321,6 +321,12 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
                     getActivity().runOnUiThread(() -> pullToRefresh.setRefreshing(false));
                 }
 
+                // Controllo se l'object è null
+                if (object == null) {
+                    getActivity().runOnUiThread(() -> pullToRefresh.setRefreshing(false));
+                    return;
+                }
+
                 // Controllo se devo aggiornare i dati dell'app
                 if (!object.get("status").getAsString().equals("update_available")) {
                     getActivity().runOnUiThread(() -> pullToRefresh.setRefreshing(false));

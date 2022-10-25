@@ -5,6 +5,7 @@
         version="1.7"
         versioncode="8">
         <change>Fix: Corretta icona documentazione ripetuta su scroll lista</change>
+        <change>Fix: Corretti crash su risposte inaspettate API endpoint</change>
         <change>New: Reimplementazione custom lettore PDF</change>
         <change>New: Ridotte dimensioni complessive app</change>
         <change>New: Aggiunta opzione schermo always on per documentazione</change>
