@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "867365873418",
+    "project_id": "magazziwan",
+    "storage_bucket": "magazziwan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867365873418:android:0e6daea1b8fe221de33cf3",
+        "android_client_info": {
+          "package_name": "me.ivanmazzoli"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "867365873418-f9f757nqkumodjpnl9ttl74l2oa47co7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR05wLMLwU-cHHB6vVgYWjZi8x3SPTORo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "867365873418-f9f757nqkumodjpnl9ttl74l2oa47co7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

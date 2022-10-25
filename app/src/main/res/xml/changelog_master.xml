@@ -8,6 +8,7 @@
         <change>New: Reimplementazione custom lettore PDF</change>
         <change>New: Ridotte dimensioni complessive app</change>
         <change>New: Aggiunta opzione schermo always on per documentazione</change>
+        <change>New: Implementato Crashalytics</change>
     </release>
 
     <release
