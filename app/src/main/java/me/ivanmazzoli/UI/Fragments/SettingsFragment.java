@@ -11,8 +11,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +24,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.preference.Preference;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -156,7 +157,11 @@ public class SettingsFragment extends SmartSettingsFragment {
                     picture.setImageBitmap(bitmap);
                     androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
                     builder.setView(layout);
+                    builder.setTitle("QR Configurazione");
                     builder.setPositiveButton("Chiudi", (dialog, which) -> {
+                    });
+                    builder.setNeutralButton("Condividi", (dialog, which) -> {
+                        shareQRcode(bitmap);
                     });
                     Dialog dialog = builder.create();
                     dialog.show();
@@ -226,5 +231,16 @@ public class SettingsFragment extends SmartSettingsFragment {
                 .setNegativeButton("Annulla", null)
                 .create()
                 .show();
+    }
+
+    private void shareQRcode(Bitmap bitmap) {
+        String bitmapPath = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, "Config QR", "");
+        Uri bitmapUri = Uri.parse(bitmapPath);
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.setType("image/png");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "MagazzIwan - Codice QR autoconfigurante");
+        startActivity(Intent.createChooser(shareIntent, "Condividi QR con:"));
     }
 }
