@@ -219,15 +219,15 @@ public class PreferenceHelper {
     }
 
     public String getDataEndpoint() {
-        return preferences.getString(URL_API, "https://www.tipsyapp.it/ilpra/api/update.php");
+        return preferences.getString(URL_API, "http://imazzoli.duckdns.org:8080/ilpra/api/update.php");
     }
 
     public String getUpdateEndpoint() {
-        return preferences.getString(instance.URL_UPDATE, "https://www.tipsyapp.it/ilpra/release/build.txt");
+        return preferences.getString(instance.URL_UPDATE, "http://imazzoli.duckdns.org:8080/ilpra/release/build.txt");
     }
 
     public String getApkEndpoint() {
-        return preferences.getString(instance.URL_APK, "https://www.tipsyapp.it/ilpra/release/release.apk");
+        return preferences.getString(instance.URL_APK, "http://imazzoli.duckdns.org:8080/ilpra/release/app-release.apk");
     }
 
     public boolean getScreenAlwaysOn() {

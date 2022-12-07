@@ -10,6 +10,7 @@
         <change>New: Ridotte dimensioni complessive app</change>
         <change>New: Aggiunta opzione schermo always on per documentazione</change>
         <change>New: Implementato Crashalytics</change>
+        <change>Change: modificati endpoint di default</change>
     </release>
 
     <release
