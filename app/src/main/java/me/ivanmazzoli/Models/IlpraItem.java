@@ -44,7 +44,10 @@ public class IlpraItem {
     }
 
     public String getIlpraInfo() {
-        return this.ilpra_code + " - " + this.location;
+        if (getLocation() != null && !getLocation().equals(""))
+            return this.ilpra_code + " - " + this.location;
+        else
+            return this.ilpra_code;
     }
 
     public String getImageUrl() {
