@@ -2,6 +2,12 @@
 <changelog>
 
     <release
+        version="1.8"
+        versioncode="9">
+        <change>New: Schermata di avviso su ricerca vuota</change>
+    </release>
+
+    <release
         version="1.7"
         versioncode="8">
         <change>Fix: Corretta icona documentazione ripetuta su scroll lista</change>

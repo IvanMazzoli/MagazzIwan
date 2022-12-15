@@ -49,6 +49,7 @@ import okhttp3.Response;
 public class ListFragment extends SmartFragment implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener {
 
     // View classe
+    @BindView(R.id.emptyResultView) View emptyView;
     @BindView(R.id.pullToRefresh) SwipeRefreshLayout pullToRefresh;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
@@ -140,6 +141,7 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
         pullToRefresh.setOnRefreshListener(this);
 
         recyclerView = view.findViewById(R.id.recyclerView);
+        emptyView.setVisibility(View.GONE);
 
         setupList();
 
@@ -215,19 +217,7 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
      */
     @Override
     public boolean onQueryTextSubmit(String query) {
-
-        setSearchQuery(query);
-        drawerManager.updateFragmentSearch(this, query);
-
-        // Se non ho POI mi fermo
-        if (pois.size() == 0)
-            return true;
-
-        // Filtro la lista
-        adapter.filter(query);
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-        return true;
+        return filterList(query, true);
     }
 
     /**
@@ -238,16 +228,31 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
      */
     @Override
     public boolean onQueryTextChange(String query) {
+        return filterList(query, false);
+    }
 
+    private boolean filterList(String query, boolean hideSoftInput) {
         setSearchQuery(query);
         drawerManager.updateFragmentSearch(this, query);
 
-        // Se non ho POI mi fermo
-        if (pois.size() == 0)
-            return true;
-
         // Filtro la lista
         adapter.filter(query);
+
+        // Controllo la dimensione
+        if (adapter.getItemCount() == 0) {
+            if (emptyView.getVisibility() != View.VISIBLE)
+                emptyView.setVisibility(View.VISIBLE);
+            return true;
+        }
+
+        if (emptyView.getVisibility() != View.GONE)
+            emptyView.setVisibility(View.GONE);
+
+        if (!hideSoftInput)
+            return true;
+
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
         return true;
     }
 
