@@ -108,7 +108,17 @@ public class ListFragment extends SmartFragment implements SearchView.OnQueryTex
                 this.setActivityTitle("Connettori");
                 this.filter = "Connettore";
                 break;
+            case 10:
+                this.setDrawerTitle("Materiale di consumo");
+                this.setDrawerIcon(R.drawable.ic_consumables);
+                this.setActivityTitle("Materiale di consumo");
+                this.filter = "Materiale di consumo";
+                break;
             default:
+                this.setDrawerTitle("ERRORE");
+                this.setDrawerIcon(R.drawable.ic_error);
+                this.setActivityTitle("ERRORE");
+                this.filter = "ERRORE";
                 break;
         }
     }

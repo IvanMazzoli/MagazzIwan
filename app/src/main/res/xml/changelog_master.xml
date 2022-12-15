@@ -4,6 +4,7 @@
     <release
         version="1.8"
         versioncode="9">
+        <change>New: Aggiunta sezione "Consumabili"</change>
         <change>New: Schermata di avviso su ricerca vuota</change>
     </release>
 
