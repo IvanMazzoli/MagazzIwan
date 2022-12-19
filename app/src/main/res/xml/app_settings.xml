@@ -30,21 +30,21 @@
         android:title="URL Server">
 
         <EditTextPreference
-            android:defaultValue="https://www.tipsyapp.it/ilpra/api/update.php"
+            android:defaultValue="http://imazzoli.duckdns.org:8080/ilpra/api/update.php"
             app:iconSpaceReserved="false"
             app:key="apiEndpoint"
             app:title="Indirizzo API"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            android:defaultValue="https://www.tipsyapp.it/ilpra/release/build.txt"
+            android:defaultValue="http://imazzoli.duckdns.org:8080/ilpra/release/build.txt"
             app:iconSpaceReserved="false"
             app:key="updateEndpoint"
             app:title="Indirizzo check update"
             app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
-            android:defaultValue="https://www.tipsyapp.it/ilpra/release/release.apk"
+            android:defaultValue="http://imazzoli.duckdns.org:8080/ilpra/release/release.apk"
             app:iconSpaceReserved="false"
             app:key="apkEndpoint"
             app:title="Indirizzo APK"
