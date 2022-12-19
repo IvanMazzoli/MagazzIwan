@@ -59,18 +59,27 @@
             android:id="@+id/makerCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="italic" />
+            android:drawablePadding="4dp"
+            android:textStyle="italic"
+            app:drawableLeftCompat="@drawable/ic_barcode"
+            app:drawableTint="@android:color/tab_indicator_text" />
 
         <TextView
             android:id="@+id/maker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="italic" />
+            android:drawablePadding="4dp"
+            android:textStyle="italic"
+            app:drawableLeftCompat="@drawable/ic_industry"
+            app:drawableTint="@android:color/tab_indicator_text" />
 
         <TextView
             android:id="@+id/ilpraInfo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:drawablePadding="4dp"
+            app:drawableLeftCompat="@drawable/ic_ilpra"
+            app:drawableTint="@android:color/tab_indicator_text" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
