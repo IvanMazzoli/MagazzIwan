@@ -6,6 +6,7 @@
         <item>@string/drives</item>
         <item>@string/cables</item>
         <item>@string/connectors</item>
+        <item>@string/consumables</item>
         <item>@string/plc_exp</item>
         <item>@string/buttons_accessories</item>
         <item>@string/thermal</item>
@@ -16,6 +17,7 @@
         <item>6</item>
         <item>4</item>
         <item>8</item>
+        <item>10</item>
         <item>3</item>
         <item>7</item>
         <item>5</item>
