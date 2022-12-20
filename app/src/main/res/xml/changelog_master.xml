@@ -4,9 +4,10 @@
     <release
         version="1.8"
         versioncode="9">
-        <change>New: Aggiunta sezione "Consumabili"</change>
+        <change>New: Aggiunta sezione "Materiali di consumo"</change>
         <change>New: Schermata di avviso su ricerca vuota</change>
         <change>New: Aggiunte icone in lista articoli</change>
+        <change>New: Possibilità di copiare i codici tenendo premuto un elemento in lista</change>
     </release>
 
     <release

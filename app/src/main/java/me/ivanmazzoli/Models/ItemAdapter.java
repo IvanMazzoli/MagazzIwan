@@ -3,13 +3,17 @@ package me.ivanmazzoli.Models;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -57,29 +61,65 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_product, parent, false);
-        return new ViewHolder(view, position -> {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.dialog_zoom, null);
-            ZoomageView picture = layout.findViewById(R.id.zoomImage);
-            Glide.with(picture).load(poiList.get(position).getImageUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.DATA)
-                    .placeholder(R.drawable.ic_android)
-                    .error(R.drawable.ic_android)
-                    .dontAnimate()
-                    .into(picture);
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setView(layout);
+        return new ViewHolder(view, new ViewHolder.ViewHolderClicks() {
+            @Override
+            public void onViewClick(int position) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                View layout = inflater.inflate(R.layout.dialog_zoom, null);
+                ZoomageView picture = layout.findViewById(R.id.zoomImage);
+                Glide.with(picture).load(poiList.get(position).getImageUrl())
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .placeholder(R.drawable.ic_android)
+                        .error(R.drawable.ic_android)
+                        .dontAnimate()
+                        .into(picture);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setView(layout);
 
-            if (poiList.get(position).getDocs() != null)
-                builder.setPositiveButton("Apri Documentazione", (dialog, which) -> {
-                    Intent docs = new Intent(context, PdfActivity.class);
-                    docs.putExtra("docUrl", poiList.get(position).getDocs());
-                    docs.putExtra("docName", poiList.get(position).getMakeCode());
-                    context.startActivity(docs);
+                if (poiList.get(position).getDocs() != null)
+                    builder.setPositiveButton("Apri Documentazione", (dialog, which) -> {
+                        Intent docs = new Intent(context, PdfActivity.class);
+                        docs.putExtra("docUrl", poiList.get(position).getDocs());
+                        docs.putExtra("docName", poiList.get(position).getMakeCode());
+                        context.startActivity(docs);
+                    });
+
+                Dialog dialog = builder.create();
+                dialog.show();
+            }
+
+            @Override
+            public void onViewLongClick(int position) {
+                Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(100);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Copia..");
+                String[] options = {"Copia nome articolo", "Copia codice produttore", "Copia codice ILPRA e posizione", "Copia tutto"};
+                builder.setItems(options, (dialog, which) -> {
+                    String text = null;
+                    IlpraItem item = poiList.get(position);
+                    switch (which) {
+                        case 0:
+                            text = item.getName();
+                            break;
+                        case 1:
+                            text = item.getMakeCode();
+                            break;
+                        case 2:
+                            text = item.getIlpraCode() + " - " + item.getLocation();
+                            break;
+                        case 3:
+                            text = item.getName() + "\n• " + item.getMakeCode() + "\n• " + item.getIlpraCode() + " - " + item.getLocation();
+                            break;
+                    }
+                    ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText(text, text);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(context, "Copiato negli appunti", Toast.LENGTH_LONG).show();
                 });
-
-            Dialog dialog = builder.create();
-            dialog.show();
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         });
     }
 
@@ -169,7 +209,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     /**
      * Classe contenente le proprietà della view del POI
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         // View del ItemViewHolder
         public final View view;
@@ -201,7 +241,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             this.picture = view.findViewById(R.id.itemPic);
             this.docs = view.findViewById(R.id.imgDocs);
 
+            // Click listener sull'immagine dell'elemento
             this.picture.setOnClickListener(this);
+
+            // Long click sull'elemento apre popup di copia
+            this.view.setOnLongClickListener(this);
         }
 
         /**
@@ -215,10 +259,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         }
 
         /**
+         * Metodo per gestire il long click di una view del ItemViewHolder
+         *
+         * @param v View cliccata
+         */
+        @Override
+        public boolean onLongClick(View v) {
+            listener.onViewLongClick(getAdapterPosition());
+            return false;
+        }
+
+        /**
          * Interfaccia per gestire i click della
          */
         public interface ViewHolderClicks {
             void onViewClick(int position);
+
+            void onViewLongClick(int position);
         }
     }
 }
