@@ -12,6 +12,7 @@ import android.widget.Toast;
 import de.cketti.library.changelog.ChangeLog;
 import me.ivanmazzoli.R;
 import me.ivanmazzoli.Models.SmartFragment;
+import me.ivanmazzoli.UI.Activities.DebugActivity;
 import me.ivanmazzoli.Utils.DrawerManager;
 
 public class AboutFragment extends SmartFragment {
@@ -66,6 +67,14 @@ public class AboutFragment extends SmartFragment {
         });
 
         view.findViewById(R.id.btnChangelog).setOnClickListener(v -> new ChangeLog(getContext()).getFullLogDialog().show());
+
+        txtVersion.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                getContext().startActivity(new Intent(getActivity(), DebugActivity.class));
+                return true;
+            }
+        });
 
         return view;
     }
