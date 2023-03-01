@@ -61,8 +61,20 @@ public class SplashActivity extends AppCompatActivity {
         // Ottengo gli extras dal bundle
         boolean forceUpdate = getIntent().getBooleanExtra("forceUpdate", false);
 
-        // Se l'app è stata lanciata menzo di mezz'ora fa avvio subito
-        if (new DateTime().minusMinutes(2).isBefore(preferences.getLastAppLaunch()) && !forceUpdate) {
+        // Se ho disabilitato gli update avvio subito
+        if (preferences.disableDbUpdates() && !forceUpdate) {
+            startApp(true);
+            return;
+        }
+
+        // Se l'app è stata lanciata meno di cinque minuti fa avvio subito (tanti upd)
+        if (new DateTime().minusMinutes(5).isBefore(preferences.getLastAppLaunch()) && !forceUpdate && !preferences.doLessDbUpdates()) {
+            startApp(true);
+            return;
+        }
+
+        // Se l'app è stata lanciata menzo di due ore fa avvio subito (meno upd)
+        if (new DateTime().minusHours(2).isBefore(preferences.getLastAppLaunch()) && !forceUpdate && preferences.doLessDbUpdates()) {
             startApp(true);
             return;
         }
@@ -176,9 +188,6 @@ public class SplashActivity extends AppCompatActivity {
     // Metodo per avviare l'app dopo un delay
     private void startApp(boolean bypassCooldown) {
 
-        // Aggiorno l'ultimo avvio app
-        preferences.setLastAppLaunch(new DateTime().getMillis());
-
         if (bypassCooldown) {
             Intent intent;
             intent = new Intent(SplashActivity.this, NavigationActivity.class);
@@ -186,6 +195,9 @@ public class SplashActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        // Aggiorno l'ultimo avvio app
+        preferences.setLastAppLaunch(new DateTime().getMillis());
 
         new Handler().postDelayed(() -> {
             Intent intent = new Intent(SplashActivity.this, NavigationActivity.class);

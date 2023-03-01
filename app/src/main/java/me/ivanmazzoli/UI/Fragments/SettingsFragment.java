@@ -24,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.preference.Preference;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -54,6 +55,17 @@ public class SettingsFragment extends SmartSettingsFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.app_settings);
         PreferenceHelper ph = PreferenceHelper.getInstance(getActivity());
+
+        Preference doLessUpdates = findPreference("lessDbUpdates");
+
+        if (ph.disableDbUpdates())
+            doLessUpdates.setEnabled(false);
+
+        findPreference("disableDbUpdates").setOnPreferenceChangeListener((preference, newValue) -> {
+            doLessUpdates.setEnabled(!((boolean) newValue));
+            ph.setDisableDbUpdates(((boolean) newValue));
+            return true;
+        });
 
         qrActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),

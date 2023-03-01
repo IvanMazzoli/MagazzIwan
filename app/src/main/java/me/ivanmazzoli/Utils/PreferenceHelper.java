@@ -25,6 +25,8 @@ public class PreferenceHelper {
     private final String URL_UPDATE = "updateEndpoint";
     private final String URL_APK = "apkEndpoint";
     private final String ALWAYS_ON = "enableAlwaysOn";
+    private final String LESS_DB_UPDATES = "lessDbUpdates";
+    private final String DISABLE_DB_UPDATES = "disableDbUpdates";
 
 
     private static Context context;
@@ -232,5 +234,23 @@ public class PreferenceHelper {
 
     public boolean getScreenAlwaysOn() {
         return preferences.getBoolean(ALWAYS_ON, true);
+    }
+
+    public boolean doLessDbUpdates() {
+        return preferences.getBoolean(LESS_DB_UPDATES, false);
+    }
+
+    public void setDoLessDbUpdates(boolean value) {
+        editor.putBoolean(LESS_DB_UPDATES, value);
+        editor.commit();
+    }
+
+    public boolean disableDbUpdates() {
+        return preferences.getBoolean(DISABLE_DB_UPDATES, false);
+    }
+
+    public void setDisableDbUpdates(boolean value) {
+        editor.putBoolean(DISABLE_DB_UPDATES, value);
+        editor.commit();
     }
 }

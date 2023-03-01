@@ -15,19 +15,37 @@
             android:key="launchScreen"
             android:title="Schermata d'avvio"
             app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <!-- Comportamento -->
+    <PreferenceCategory
+        android:icon="@drawable/ic_settings"
+        android:title="Comportamento">
+
         <SwitchPreference
             android:defaultValue="true"
             android:key="enableAlwaysOn"
-            android:summary="Se abilitato lo schermo non andrà in timeout durante la lettura della documentazione in PDF di un articolo"
+            android:summary="Lo schermo non andrà in timeout durante la lettura della documentazione in PDF di un articolo"
             android:title="Schermo sempre acceso"
             app:iconSpaceReserved="false" />
-
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="lessDbUpdates"
+            android:summary="L'app ridurrà gli aggiornamenti del database all'avvio, aprendosi più velocemente"
+            android:title="Riduci aggiornamenti database"
+            app:iconSpaceReserved="false" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="disableDbUpdates"
+            android:summary="L'app non aggiornerà il database all'avvio, aprendosi più velocemente"
+            android:title="Disabilita aggiornamenti database all'avvio"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
     <!-- URL -->
     <PreferenceCategory
         android:icon="@drawable/ic_storage"
-        android:title="URL Server">
+        android:title="Gestione Server Backend">
 
         <EditTextPreference
             android:defaultValue="http://imazzoli.duckdns.org:8080/ilpra/api/update.php"
